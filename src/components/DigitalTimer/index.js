@@ -1,16 +1,16 @@
 // Write your code here
 import {Component} from 'react'
+
 import './index.css'
 
 class DigitalTimer extends Component {
   state = {startButton: false, timeInMinutes: 25, timeInSeconds: 0}
 
-  clearTimeInterval = () => clearInterval(this.intervalId)
-
-  resetButton = () => {
+  componentWillUnmount() {
     this.clearTimeInterval()
-    this.setState({startButton: false, timeInMinutes: 25, timeInSeconds: 0})
   }
+
+  clearTimeInterval = () => clearInterval(this.intervalId)
 
   getDecrement = () => {
     const {timeInMinutes} = this.state
@@ -32,7 +32,7 @@ class DigitalTimer extends Component {
 
     return (
       <div>
-        <p>Set Timer Limit</p>
+        <p className="set-timer-heading">Set Timer limit</p>
         <div className="set-limit-section">
           <button
             disabled={isDisabled}
@@ -42,7 +42,10 @@ class DigitalTimer extends Component {
           >
             -
           </button>
-          <p className="timer-set-bg">{timeInMinutes}</p>
+          <div className="timer-set-bg">
+            <p className="time-limit">{timeInMinutes}</p>
+          </div>
+
           <button
             disabled={isDisabled}
             className="button"
@@ -54,6 +57,11 @@ class DigitalTimer extends Component {
         </div>
       </div>
     )
+  }
+
+  resetButton = () => {
+    this.clearTimeInterval()
+    this.setState({startButton: false, timeInMinutes: 25, timeInSeconds: 0})
   }
 
   incrementTimeElapsedInSec = () => {
@@ -100,23 +108,23 @@ class DigitalTimer extends Component {
     return (
       <div>
         <div className="start-button-container">
-          <button className="button" type="button">
-            <img
-              className="icons"
-              alt={isStartAlt}
-              src={isStartIcon}
-              onClick={this.isStartOrPause}
-            />
+          <button
+            onClick={this.isStartOrPause}
+            className="button"
+            type="button"
+          >
+            <img className="icons" alt={isStartAlt} src={isStartIcon} />
+            <p>{isStartStatus}</p>
           </button>
-          <p>{isStartStatus}</p>
+
           <button onClick={this.resetButton} className="button" type="button">
             <img
               className="icons"
               alt="reset icon"
               src="https://assets.ccbp.in/frontend/react-js/reset-icon-img.png"
             />
+            <p>Reset</p>
           </button>
-          <p>Reset</p>
         </div>
       </div>
     )
@@ -145,13 +153,13 @@ class DigitalTimer extends Component {
           <div className="card-container">
             <div className="timer-bg-image">
               <div className="timer-circle">
-                <p className="time-color">
+                <h1 className="time-color">
                   {this.getTimeInMinutesAndSeconds()}
-                </p>
-                <p>{isStartTimeStatus}</p>
+                </h1>
+                <p className="pause-running">{isStartTimeStatus}</p>
               </div>
             </div>
-            <div>
+            <div className="timer-limit-section">
               {this.renderTimerController()}
               {this.renderTimeLimitController()}
             </div>
